@@ -124,6 +124,7 @@ robgit <- function(X, consenso = FALSE) {
         W <- Y
         Y <- spatialmed_config(X)
         z <- (z + 1)
+        iterTotal <- iterTotal - 1;
     }
     if (adjustament == TRUE) {
         V <- array(matrix(nrow = f, ncol = 2, 0), c(f, 2, r + 1), dimnames = NULL)
@@ -151,4 +152,5 @@ robgit <- function(X, consenso = FALSE) {
         }
 
     }
+
 }
