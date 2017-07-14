@@ -6,13 +6,13 @@
 #' @param r Number of matrices (objects)
 #' @return A corresponding set of r CENTERED matrices of size nx3
 #'
-#' @author Guillermo A. Pacheco, Viviana Ferraggine & Sebastián Torcida
+#' @author Guillermo A. Pacheco, Viviana Ferraggine & Sebasti?n Torcida
 initialFocus <- function(X, f, r) {
     for (k in 1:r) {
         taux <- matrix(nrow = 1, ncol = 3, 0)  #aux. var. to store the actual center
         # taux <- componentwise median? HABRIA QUE INCLUIR ESTA OPCION...
         taux <- spatialmed_landmark(X[, , k])
-        print(taux)
+        #print(taux)
         X[, , k] <- X[, , k] - (matrix(nrow = f, ncol = 1, 1) %*% taux)  # lleva la madiana espacial de la configuracion al origen, junto con todos sus puntos.
     }
 

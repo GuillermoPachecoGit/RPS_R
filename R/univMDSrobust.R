@@ -22,7 +22,7 @@ univMDSrobust <- function(D, k) {
     cant <- 0
 
     for (iter in 1:iteraciones) {
-        print(iter)
+        #print(iter)
         for (ii in 1:nl) {
             for (it in 1:floor(sqrt(iter))) {
                 Z <- computeIntersections(X, ii, D)

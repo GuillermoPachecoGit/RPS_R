@@ -87,6 +87,7 @@ robgit <- function(X, consenso = FALSE) {
     conteo <- matrix(nrow = f + 1, ncol = r, 0)
     conteomed <- matrix(nrow = 1, ncol = r, 0)
     while ((z <= iterTotal) & (medland(Y - W, 1) > tol)) {
+        print(iterTotal)
         for (k in 1:r) {
             Aux[, , k] <- scaleSpecimen(Aux[, , k], Y)
             list_out <- rotation(Aux[, , k], H[, , k], Y)
