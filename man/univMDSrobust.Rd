@@ -2,19 +2,26 @@
 % Please edit documentation in R/univMDSrobust.R
 \name{univMDSrobust}
 \alias{univMDSrobust}
-\title{Description}
+\title{Given a nxn distance matrix D(not necessarily Euclidean) and a initial set X0 (nxk matrix)
+ of n seeds in k dim, the function finds a set of n points  in k dimensions X (kxn matrix) by resistent method such
+ that Euclidean distance nxn matrix Dk among these new points X is as close as to D.}
 \usage{
 univMDSrobust(D, k)
 }
+\arguments{
+\item{D}{distance matrix nxn.}
+
+\item{k}{dimention of output.}
+}
 \value{
-s
+X the function finds a set of n points  in k dimensions X (kxn matrix) by resistent method such
+ that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
 }
 \description{
-Description
-}
-\examples{
-
+Given a nxn distance matrix D(not necessarily Euclidean) and a initial set X0 (nxk matrix)
+ of n seeds in k dim, the function finds a set of n points  in k dimensions X (kxn matrix) by resistent method such
+ that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
 }
 \author{
-Guillermo Andres Pacheco
+Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
 }

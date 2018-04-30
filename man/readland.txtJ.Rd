@@ -2,19 +2,21 @@
 % Please edit documentation in R/readland_txtJ.R
 \name{readland.txtJ}
 \alias{readland.txtJ}
-\title{Description}
+\title{Reads a MorphoJ txt file and returns it as a s-dimensional array of n * k matrix}
 \usage{
-readland.txtJ(path, dim, sim)
+readland.txtJ(path, dim)
+}
+\arguments{
+\item{path}{Path of file.}
+
+\item{dim}{Dimension of the configuration (2D OR 3D).}
 }
 \value{
-s
+A s-dimensional array of n * k matrix and a list of specimens names.
 }
 \description{
-Description
-}
-\examples{
-
+Reads a MorphoJ txt file and returns it as a s-dimensional array of n * k matrix
 }
 \author{
-Guillermo Andres Pacheco
+Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
 }

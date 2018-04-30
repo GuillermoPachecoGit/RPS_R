@@ -2,19 +2,21 @@
 % Please edit documentation in R/distanciaR.R
 \name{distanciaR}
 \alias{distanciaR}
-\title{Description}
+\title{This function computes the a resistant distance between
+each pair of matrices from the input set}
 \usage{
 distanciaR(X)
 }
+\arguments{
+\item{X}{The input set of nx3 matrices (objects)}
+}
 \value{
-s
+This function computes the a resistant distance between each pair of matrices from the input set
 }
 \description{
-Description
-}
-\examples{
-
+This function computes the a resistant distance between
+each pair of matrices from the input set
 }
 \author{
-Guillermo Andres Pacheco
+Guillermo A. Pacheco, Viviana Ferraggine, Sebastian Torcida
 }

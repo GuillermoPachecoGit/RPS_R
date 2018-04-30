@@ -2,19 +2,21 @@
 % Please edit documentation in R/deleteLandmark.R
 \name{deletePoint}
 \alias{deletePoint}
-\title{Description}
+\title{This procedure deletes a landmark (row) from the input nx3 matrix}
 \usage{
 deletePoint(x, num_landmark)
 }
+\arguments{
+\item{x}{A nx3 matrix (n is the number of landmarks)}
+
+\item{num_landmark}{The number of landmark (row) to be deleted}
+}
 \value{
-s
+x The corresponding (n-1)x3 output matrix
 }
 \description{
-Description
-}
-\examples{
-
+This procedure deletes a landmark (row) from the input nx3 matrix
 }
 \author{
-Guillermo Andres Pacheco
+Guillermo A. Pacheco, Viviana Ferraggine, Sebastian Torcida
 }

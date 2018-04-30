@@ -1,17 +1,15 @@
-#' Description
+#' Given a nxn distance matrix D(not necessarily Euclidean) and a initial set X0 (nxk matrix)
+#'  of n seeds in k dim, the function finds a set of n points  in k dimensions X (kxn matrix) by resistent method such
+#'  that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
 #'
-#' @param
-#' @param
-#' @return s
+#' @param D distance matrix nxn.
+#' @param k dimention of output.
 #'
-#' @aliases
-#' @family
+#' @return X the function finds a set of n points  in k dimensions X (kxn matrix) by resistent method such
+#'  that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
+#'
+#' @author Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
 #' @export
-#'
-#' @examples
-#'
-#' @author Guillermo Andres Pacheco
-#' @exports
 univMDSrobust <- function(D, k) {
     iteraciones <- 10
     tol <- 1e-09
@@ -22,11 +20,11 @@ univMDSrobust <- function(D, k) {
     cant <- 0
 
     for (iter in 1:iteraciones) {
-        #print(iter)
+        print(iter)
         for (ii in 1:nl) {
             for (it in 1:floor(sqrt(iter))) {
                 Z <- computeIntersections(X, ii, D)
-                b <- Robgit2012::spatialmed_landmark(t(Z))  #porque Z transpuesto??
+                b <- spatialmed_landmark(t(Z))  #porque Z transpuesto??
                 a <- t(b)
 
                 x1 <- cbind(t(t(X[, 1:ii - 1])), a)
@@ -53,3 +51,89 @@ univMDSrobust <- function(D, k) {
 
     return(t(X))
 }
+
+
+computeIntersections <- function(X, ii, D) {
+  k <- nrow(X)
+  nl <- ncol(X)
+  V <- X - matlab::repmat(t(t(as.matrix(X[, ii]))), 1, nl)
+  Daux <- t(t(sqrt((apply(V * V, 2, sum)))))
+
+  Q <- as.matrix(D[ii, ])/Daux  #mirar el operador
+
+  Z <- X - V * matlab::repmat(Q, k, 1)
+  Z <- Z[, -ii]
+  return(Z)
+}
+
+randomMatrix <- function(NRows, NCols) {
+  myMat <- matrix(runif(NCols * NRows), ncol = NCols)
+  return(myMat)
+}
+
+distAllPairsL2 <- function(X) {
+  q <- t(X) %*% X
+  n <- ncol(q)
+  normx <- matlab::repmat(as.matrix(apply(t(X)^2, 1, sum)), 1, n)
+  K <- Re(sqrtm(q * (-2) + normx + t(normx)))
+  K <- K - (diag(diag(K)))
+  return(K)
+}
+
+spatialmed_landmark <- function(X) {
+  tol = 1e-09
+
+  n <- nrow(X)
+  p <- ncol(X)
+
+  m <- matrix(nrow = 1, ncol = p, 0)
+  A <- matrix(nrow = n, ncol = p, 0)
+
+  w <- matrix(nrow = 1, ncol = n, 1)
+  s <- matrix(nrow = 1, ncol = n, 0)
+  aux <- matrix(nrow = 1, ncol = p, 0)
+  auxant <- matrix(nrow = 1, ncol = p, 0)
+
+  tdemu <- matrix(nrow = 1, ncol = p, 0)
+  rdemu <- matrix(nrow = 1, ncol = p, 0)
+  gamagama <- 0
+  sensor <- 0
+
+  A <- X
+
+
+  aux <- apply(A, 2, mean)  #aux <- w%*%A/sum(w)
+
+  h <- 1
+  # print(A)
+
+  while ((median(abs(aux - auxant)) > tol) & (h <= 1000)) {
+    # print('imprimo s:') print(aux)
+    # print('******************************************************') print('AUX: ') print(aux)
+    for (k in 1:n) {
+
+      # print('A[k,]') print(t(as.matrix(A[k,]))) print(norm(aux - t(as.matrix(A[k,])) ) )
+      if (norm(aux - t(as.matrix(A[k, ]))) == 0) {
+        s[1, k] <- tol
+        sensor <- 1
+      } else {
+        s[1, k] <- w[1, k]/norm(aux - t(as.matrix(A[k, ])), "F")
+      }
+
+    }
+    auxant <- aux
+
+    tdemu <- s %*% A/sum(s)
+    rdemu <- s %*% A
+    gamagama <- min(1, sensor, norm(rdemu, "F"))
+    # print('imprimo s luego del ciclo:') print(s)
+    aux <- (1 - gamagama) * tdemu + as.double(gamagama * aux)
+    # print('Aux luego de la multiplicacion: ') print(aux)
+    h <- (h + 1)
+
+  }
+  m <- aux
+
+  return(m)
+}
+

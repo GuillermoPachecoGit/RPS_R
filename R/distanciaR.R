@@ -5,7 +5,7 @@
 #'
 #' @return This function computes the a resistant distance between each pair of matrices from the input set
 #'
-#' @author Guillermo A. Pacheco, Viviana Ferraggine & Sebastian Torcida
+#' @author Guillermo A. Pacheco, Viviana Ferraggine, Sebastian Torcida
 #' @export
 distanciaR <- function(X) {
     numEjemplares <- ncol(X[1, , ])

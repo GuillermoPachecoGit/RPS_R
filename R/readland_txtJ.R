@@ -1,18 +1,13 @@
-#' Description
+#' Reads a MorphoJ txt file and returns it as a s-dimensional array of n * k matrix
 #'
-#' @param
-#' @param
-#' @return s
+#' @param path Path of file.
+#' @param dim Dimension of the configuration (2D OR 3D).
 #'
-#' @aliases
-#' @family
+#' @return A s-dimensional array of n * k matrix and a list of specimens names.
+#'
+#' @author Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
 #' @export
-#'
-#' @examples
-#'
-#' @author Guillermo Andres Pacheco
-#' @exports
-readland.txtJ <- function(path, dim, sim) {
+readland.txtJ <- function(path, dim) {
     result <- read.table(path)  #get data from the file into an array
 
     s <- nrow(result)  #number of specimens

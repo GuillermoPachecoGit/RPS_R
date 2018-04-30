@@ -4,7 +4,7 @@
 #' @param num_landmark The number of landmark (row) to be deleted
 #' @return x The corresponding (n-1)x3 output matrix
 #'
-#' @author Guillermo A. Pacheco, Viviana Ferraggine & Sebastián Torcida
+#' @author Guillermo A. Pacheco, Viviana Ferraggine, Sebastian Torcida
 #' @export
 deletePoint <- function(x, num_landmark) {
     x <- x[-num_landmark, ]

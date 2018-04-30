@@ -1,19 +1,17 @@
-#' Description
+#'  Given a nxn distance matrix D(not necessarily Euclidean) and a initial set X0 (nxk matrix)
+#'  of n seeds in k dim, the function finds a set of n points in k dimensions X (kxn matrix) by least squares such
+#'  that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
 #'
-#' @param
-#' @param
-#' @return s
+#' @param D distance matrix nxn.
+#' @param k dimention of output.
 #'
-#' @aliases
-#' @family
+#' @return X  the function finds a set of n points in k dimensions X (kxn matrix) by least squares such that
+#'  Euclidean distance nxn matrix Dk among these new points X is as close as to D.
+#'
+#' @author Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
 #' @export
-#'
-#' @examples
-#'
-#' @author Guillermo Andres Pacheco
-#' @exports
 univMDSeucl <- function(D, k) {
-    iteraciones <- 100
+    iteraciones <- 10
     tol <- 1e-09
     nl <- nrow(D)
     X <- t(randomMatrix(nl, k))
@@ -25,7 +23,7 @@ univMDSeucl <- function(D, k) {
     for (iter in 1:iteraciones) {
         for (ii in 1:nl) {
             for (it in 1:floor(sqrt(iter))) {
-                #print(iter)
+                print(iter)
                 Z <- computeIntersections(X, ii, D)
                 a <- t(t(apply(Z, 1, mean)))
                 x1 <- cbind(t(t(X[, 1:ii - 1])), a)
@@ -50,3 +48,31 @@ univMDSeucl <- function(D, k) {
     }
     return(t(X))
 }
+
+computeIntersections <- function(X, ii, D) {
+  k <- nrow(X)
+  nl <- ncol(X)
+  V <- X - matlab::repmat(t(t(as.matrix(X[, ii]))), 1, nl)
+  Daux <- t(t(sqrt((apply(V * V, 2, sum)))))
+
+  Q <- as.matrix(D[ii, ])/Daux  #mirar el operador
+
+  Z <- X - V * matlab::repmat(Q, k, 1)
+  Z <- Z[, -ii]
+  return(Z)
+}
+
+randomMatrix <- function(NRows, NCols) {
+  myMat <- matrix(runif(NCols * NRows), ncol = NCols)
+  return(myMat)
+}
+
+distAllPairsL2 <- function(X) {
+  q <- t(X) %*% X
+  n <- ncol(q)
+  normx <- matlab::repmat(as.matrix(apply(t(X)^2, 1, sum)), 1, n)
+  K <- Re(sqrtm(q * (-2) + normx + t(normx)))
+  K <- K - (diag(diag(K)))
+  return(K)
+}
+

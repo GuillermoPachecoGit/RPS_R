@@ -7,7 +7,7 @@
 #'
 #' @return This function computes the least squares distance between each pair of matrices from the input set
 #'
-#' @author Guillermo A. Pacheco, Viviana Ferraggine & Sebastian Torcida
+#' @author Guillermo A. Pacheco, Viviana Ferraggine, Sebastian Torcida
 #' @export
 distanciaCM <- function(X) {
     numEjemplares <- ncol(X[1, , ])
