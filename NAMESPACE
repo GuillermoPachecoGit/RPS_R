@@ -3,6 +3,8 @@
 export(deletePoint)
 export(distanciaCM)
 export(distanciaR)
+export(matching.symm)
+export(object.symm)
 export(procrustesCM)
 export(readland.txtJ)
 export(robgit)

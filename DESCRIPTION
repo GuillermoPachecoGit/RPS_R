@@ -4,8 +4,9 @@ Title: Algorith of Superposition Robust Procrustes
 Version: 1.0.0
 Authors@R: c(person("Guillermo Andres", "Pacheco", email = "guillermopacheco.exa@gmail.com",
                   role = c("aut", "cre")),
-                  person("Sebastian", "Torcida", email = "unisebas@gmail.com", role = "ctb"),
-                  person("Viviana", "Ferragine", email = "viviana.ferraggine@gmail.com", role = "ctb"))
+                  person("Sebastian", "Torcida", email = "unisebas@gmail.com", role = "aut"),
+                  person("Viviana", "Ferragine", email = "viviana.ferraggine@gmail.com", role = "aut"),
+                  person("Federico", "Lotto", email = "federicolotto@gmail.com@gmail.com", role = "aut"))
 Maintainer: Guillermo Andres Pacheco <guillermopacheco.exa@gmail.com>
 Description: This package contain a function called RPS to do 
                   the Superposition Robust Procrustes of a Dataset.
@@ -18,4 +19,6 @@ Imports:
     MASS,
     igraph,
     ape,
-    matlab
+    matlab,
+    Robgit,
+    Gmedian
