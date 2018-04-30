@@ -5,7 +5,7 @@
 
 #' Description
 #'
-#' @param A s
+#' @param A matrix input
 #' @param ctr s
 #' @param side.file s
 #' @param legend.loc s
