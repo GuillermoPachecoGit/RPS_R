@@ -1,16 +1,21 @@
-#' Given a nxn distance matrix D(not necessarily Euclidean) and a initial set X0 (nxk matrix)
+#'  Given a n x n distance matrix D (not necessarily Euclidean) and a initial
+#'  set X0 (that is, a n x k matrix) of n seeds in k dim, this function finds a set of
+#'  n points in k dimensions X (that is, a k x n matrix) using a resistant criterion
+#'  such that the n x n matrix Dk of euclidean distances among these new points X
+#'  is as close as possible to D.
+#'
+#' @param D distance matrix n x n to be approximated
+#' @param k dimension of output results
+#'
+#' @return X  A set of n points in k dimensions
+#'
+#' @author Guillermo Pacheco, Viviana Ferraggine, Sebastian Torcida
+#'  Given a n x n distance matrix D (not necessarily Euclidean) and a initial set X0 (nxk matrix)
 #'  of n seeds in k dim, the function finds a set of n points  in k dimensions X (kxn matrix) by resistent method such
 #'  that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
 #'
-#' @param D distance matrix nxn.
-#' @param k dimention of output.
-#'
-#' @return X the function finds a set of n points  in k dimensions X (kxn matrix) by resistent method such
-#'  that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
-#'
-#' @author Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
 #' @export
-univMDSrobust <- function(D, k) {
+resunivMDS_RPS <- function(D, k) {
     iteraciones <- 10
     tol <- 1e-09
     nl <- nrow(D)  #numer of specimens
@@ -24,7 +29,7 @@ univMDSrobust <- function(D, k) {
         for (ii in 1:nl) {
             for (it in 1:floor(sqrt(iter))) {
                 Z <- computeIntersections(X, ii, D)
-                b <- spatialmed_landmark(t(Z))  #porque Z transpuesto??
+                b <- spatialmed_landmark(t(Z))
                 a <- t(b)
 
                 x1 <- cbind(t(t(X[, 1:ii - 1])), a)

@@ -1,15 +1,15 @@
-#' This function computes the least squares distance between
-#' each pair of matrices from the input set
+#' This function computes the least-squares Procrustes distance between
+#' each pair of matrices (configurations of landmarks) from the input set
 #'
 #'
 #' @param X The input set of nx3 matrices (objects)
 #'
 #'
-#' @return This function computes the least squares distance between each pair of matrices from the input set
+#' @return The LS Procrustes distance matrix between pairs of objects
 #'
-#' @author Guillermo A. Pacheco, Viviana Ferraggine, Sebastian Torcida
+#' @author Guillermo Pacheco, Viviana Ferraggine, Sebastian Torcida
 #' @export
-distanciaCM <- function(X) {
+cmdistance_RPS <- function(X) {
     numEjemplares <- ncol(X[1, , ])
     nLandmark <- nrow(X[, , 1])
 

@@ -1,43 +1,47 @@
-#' Resistant Procrustes Superposition in R (RPS_R),
-#'a novel package for resistant morphometrics
+#' Resistant Procrustes Superposition Package in R (RPS_R):
+#' a novel package for landmark-based resistant shape analysis
 #'
-#'Description
-#'Morphometric studies use landmark coordinates to
-#'extract shape information, and shape differences between individuals are
-#'analyzed by performing a Procrustes superposition of the corresponding
-#'configurations of landmarks.
-#'Which superposition criterion should be used is always a central issue;
-#'typically, the least squares Procrustes superposition is chosen. This method minimizes
-#'the sum of squared distances across landmarks, but it is widely accepted that the result can be
-#'misleading whenever shape differences are located in less than 50% of the
-#'landmarks.
-#'A resistant Procrustes superposition (Torcida et al. 2014) is probably the most
-#'elegant and efficient alternative, perfectly superimposing those landmarks
-#'exhibiting no variation in case they are more than 50%. Despite this appealing
-#'and rather intuitive feature, the resistant approach is seldom used probably due
-#'to the lack of a free & friendly implementation.
-#'This R-package specifically implements an a set of descriptive tools to perform
-#'a resistant shape analysis of 2D and 3D configurations of landmarks.
-
-#'The RPS_R package includes:
-#'  *a generalized resistant Procrustes superposition (robgit.R)
-#'  *a resistant distance to quantify the resulting shape differences, and
-#'  *a resistant Multidimensional Scaling to obtain the corresponding ordination.
-#' The corresponding least-squares counterparts have also been implemented, and both approaches can be therefore applied to the same dataset in order to compare their results.
+#' Description
+#' -----------
+#' Geometric morphometrics uses landmarks coordinates to
+#' extract shape information, and shape differences between objects or individuals
+#' are analyzed by performing a Procrustes superposition of the corresponding
+#' configurations of landmarks.
+#' Which superposition criterion should be used is always a central issue;
+#' typically, the least squares (LS) Procrustes superposition is chosen. This method
+#' minimizes the sum of squared distances across landmarks, but it is widely accepted
+#' that the result can be misleading whenever shape differences are located in less
+#' than 50% of thelandmarks.
+#' A resistant Procrustes superposition is probably the most
+#' elegant and efficient alternative. It perfectly superimposes those landmarks
+#' exhibiting no variation in case they are more than 50%. Despite this appealing
+#' and rather intuitive feature, the resistant approach is seldom used probably due
+#' to the lack of a free & friendly software implementation.
+#' Hence, this R-package specifically implements an a set of descriptive tools
+#' following Torcida et. al (2014*)
+#' to perform a resistant shape analysis of 2D and 3D configurations of landmarks.
+#' The RPS_R package includes:
+#'  *a generalized resistant Procrustes superposition (robgitRPS.R)
+#'  *a resistant distance to quantify the resulting shape differences (distanciaR.R), and
+#'  *a resistant Multidimensional Scaling to produce an ordination (univMDSrobust.R)
+#' The corresponding LS counterparts of the previous functions have also been
+#' implemented (procrustesCM.R, distanciaCM.R and univMDSeucl.R, respectively), to
+#' offer a rather complete set of descriptive tools and to enable the comparison
+#' of LS and resistant approaches if applied to the same dataset.
 #'
 #' @section Functions:
-#' univMDSrobust, univMDSeucl, distanciaCM, distanciaR, readland.txtJ, robgit, procrustesCM
+#' eucunivMDS_RPS, resunivMDS_RPS, cmdistance_RPS, resdistance_RPS, readlandtxtMorphJ_RPS, robgit_RPS,matchingsymm_RPS,objectsymm_RPS, procrustesCM_RPS
 #'
 #' @docType package
-#' @name 'RPS'
-#' @param X A s-dimensional array of n * k matrix, representing the different specimens to be analyzed
-#' @param consenso A logical value that determines if the array consensus is returned.
-#' @return s-dimensional array of n * k matrix, representing the different specimens after adjusting.
+#' @name 'RPS_R'
+#' @param X A s-dimensional array of n x k matrices (k configurations of n landmarks), each representing the shape of an object
+#' @param consenso A logical value that determines if the consensus configuration is returned.
+#' @return s-dimensional array of n x k matrices, representing the (resistant) superimposed objects
 #'
 #'
-#' @author Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
+#' @author Guillermo Pacheco, Viviana Ferraggine, Sebastian Torcida
 #' @export
-robgit <- function(X, consenso = FALSE) {
+robgit_RPS <- function(X, consenso = FALSE) {
 
   adjustament = FALSE
   if (ncol(X[, , 1]) == 2) {
@@ -45,7 +49,7 @@ robgit <- function(X, consenso = FALSE) {
     adjustament = TRUE
   }
   tol <- 1e-09
-  iterTotal <- 20
+  iterTotal <- 20  #maximum number of iterations
   Z <- X
   f = nrow(Z[, , 1])
   c = ncol(Z[, , 1])
@@ -72,6 +76,7 @@ robgit <- function(X, consenso = FALSE) {
   X <- initialFocus(X, f, r)
   X <- adjustmentScale(X, r)
   Y <- spatialmed_config(X)
+
   for (k in 1:r) {
     for (i in 1:f) {
       res[i, k] <- norm(t(as.matrix(Y[i, ])) - t(as.matrix(X[i, , k])), "F")
@@ -79,12 +84,15 @@ robgit <- function(X, consenso = FALSE) {
     resme[1, k] <- median(res[, k])
     resme[1, k] <- sum(res[, k])
   }
+
   residual <- sum(resme)
   residualant <- 0
   z <- 1
   Aux <- X
   conteo <- matrix(nrow = f + 1, ncol = r, 0)
   conteomed <- matrix(nrow = 1, ncol = r, 0)
+
+  # median landmark residual between consecutive (resistant) consensus is the chosen stopping criterion
   while ((z <= iterTotal) & (medland(Y - W, 1) > tol)) {
     for (k in 1:r) {
       Aux[, , k] <- scaleSpecimen(Aux[, , k], Y)
@@ -119,10 +127,12 @@ robgit <- function(X, consenso = FALSE) {
       }
       resme[1, k] <- median(res[, k])
     }
+
     W <- Y
-    Y <- spatialmed_config(X)
+    Y <- spatialmed_config(X)  # consensus: the spatial median configuration
     z <- (z + 1)
   }
+
   if (adjustament == TRUE) {
     V <- array(matrix(nrow = f, ncol = 2, 0), c(f, 2, r + 1), dimnames = NULL)
     for (i in 1:r) {
@@ -153,7 +163,7 @@ robgit <- function(X, consenso = FALSE) {
 
 adjustment3D <- function(X) {
   f <- nrow(X[, , 1])  # number of landmarks in every object
-  r <- ncol(X[, 1, ])  # number of objects in the set
+  r <- ncol(X[, 1, ])  # number of objects in the dataset
 
   R <- array(matrix(nrow = f, ncol = 3, 0), c(f, 3, r), dimnames = NULL)
 
@@ -175,7 +185,7 @@ adjustmentScale <- function(X, r) {
 }
 
 angurot <- function(R) {
-  # The rotation angle associated to R is computed in the range [-pi,pi]
+  # The rotation angle associated to rotation matrix R is computed in the range [-pi,pi]
   t = (sum(diag(R)) - 1)/2
 
   v <- acos(pmin(pmax(t, -1), 1))  # diagonal sum = trace in Matlab
@@ -209,7 +219,7 @@ ejerot <- function(R) {
 
   }
 
-  # tolerancia
+  # tolerance
   tol = 1e-11
   dif = abs(R - diag(3))
   count = 1
@@ -226,7 +236,7 @@ ejerot <- function(R) {
     i = i + 1
   }
 
-  # VER LA COMPARACION CON EL MODULO DE LA RESTA DE AMBAS MATRICES, USANDO UNA TOLERANCIA
+
   if (count < 9) {
 
     H <- R - diag(3)
@@ -319,7 +329,7 @@ estimorot3D <- function(X, Y, i, j) {
         B[3, ] <- b3/norm(b3, "F")
 
 
-        R <- t(A) %*% B  #we are aligning planes through their orthogonal vectors!!
+        R <- t(A) %*% B  #we are aligning planes by aligning their orthogonal vectors!!
       }
     } else {
       R <- diag(3)
@@ -334,10 +344,10 @@ estimorot3D <- function(X, Y, i, j) {
 initialFocus <- function(X, f, r) {
   for (k in 1:r) {
     taux <- matrix(nrow = 1, ncol = 3, 0)  #aux. var. to store the actual center
-    # taux <- componentwise median? HABRIA QUE INCLUIR ESTA OPCION...
+    # taux <- componentwise median of X([,,k]) could be another choice
     taux <- spatialmed_landmark(X[, , k])
     print(taux)
-    X[, , k] <- X[, , k] - (matrix(nrow = f, ncol = 1, 1) %*% taux)  # lleva la madiana espacial de la configuracion al origen, junto con todos sus puntos.
+    X[, , k] <- X[, , k] - (matrix(nrow = f, ncol = 1, 1) %*% taux)  # produces object spatial median to be the origin of the coordinate system
   }
 
   return(X)
@@ -362,11 +372,11 @@ matrizrot3D <- function(e, a) {
   Bloque <- matrix(nrow = 3, ncol = 3, 0)  # to store eigenvalues
   R <- matrix(nrow = 3, ncol = 3, 0)
 
-  Bloque[3, 3] <- 1  # the eigenvalue of the axis is set
-  Bloque[1:2, 1:2] = matrizrot(a)  # the 2D rotation of angle 'a' in the plante orthogonal to 'e'
+  Bloque[3, 3] <- 1  # the eigenvalue corresponding to the rotation axis
+  Bloque[1:2, 1:2] = matrizrot(a)  # the 2D rotation of angle 'a' in the plane orthogonal to axis 'e'
   V = Null(t(e))
   AF[3, ] <- e  # the axis is placed on the 3rd row
-  AF[1:2, ] <- t(V)  #preguntar
+  AF[1:2, ] <- t(V)  #
 
   R <- t(AF) %*% Bloque %*% AF
 
@@ -379,7 +389,7 @@ medianarep <- function(A) {
   aux <- matrix(nrow = f, ncol = 1, 0)
 
   for (i in 1:f) {
-    aux[i, 1] <- median(ASIND[i, ])  # obtengo un vector fila
+    aux[i, 1] <- median(ASIND[i, ])  #
   }
   m <- median(aux)
   return(m)
@@ -399,7 +409,7 @@ medland <- function(A, z) {
       # print('comparo con la fila: ') print(j)
       if (j <= f) {
         # print(j)
-        b[k, 1] <- norm(t(as.matrix(A[i, ])) - t(as.matrix(A[j, ])), "F")  # obtengo la distancia entre pares de landmarks
+        b[k, 1] <- norm(t(as.matrix(A[i, ])) - t(as.matrix(A[j, ])), "F")  # distance between pairs of landmarks
         k <- (k + 1)
       }
     }
@@ -433,7 +443,7 @@ rotation <- function(X, H, Y) {
 
 scaleSpecimen <- function(X, Y) {
   E <- escala(X, Y)
-  ro <- medianarep(E)  # obtengo el factor de escala robusto , para ajustar la configuracion k-esima con la consenso
+  ro <- medianarep(E)  # resistant scale factor for the k-th config
   X <- ro * X
   return(X)
 }
@@ -460,10 +470,10 @@ sindiagonal <- function(B) {
 spatialmed_config <- function(X) {
 
 
-  # inicializacion de variables
-  n = nrow(X[, , 1])  #cantidad de landmarks
-  p = ncol(X[, , 1])  #cantidad de dimensiones
-  r = ncol(X[, 1, ])  #cantidad de ejeplares
+  # initialization
+  n = nrow(X[, , 1])  #number of landmarks
+  p = ncol(X[, , 1])  #dimesions
+  r = ncol(X[, 1, ])  #number of objects
 
   A <- matrix(nrow = r, ncol = p, 0)
   M <- matrix(nrow = n, ncol = p, 0)
@@ -578,17 +588,17 @@ translation <- function(X, Y, f) {
 }
 
 CrossProduct3D <- function(x, y, i = 1:3) {
-  # Project inputs into 3D, since the cross product only makes sense in 3D.
+  # Converts input vectors to three dimensions, since the cross product only makes sense in 3D.
   To3D <- function(x) head(c(x, rep(0, 3)), 3)
   x <- To3D(x)
   y <- To3D(y)
 
   # Indices should be treated cyclically (i.e., index 4 is 'really' index 1, and so on).
-  # Index3D() lets us do that using R's convention of 1-based (rather than 0-based) arrays.
+  # Index3D() lets us do that, using R's convention of 1-based (rather than 0-based) arrays.
   Index3D <- function(i) (i - 1)%%3 + 1
 
-  # The i'th component of the cross product is: (x[i + 1] * y[i + 2]) - (x[i + 2] * y[i + 1])
-  # as long as we treat the indices cyclically.
+  # The i-th component of the cross product is: (x[i + 1] * y[i + 2]) - (x[i + 2] * y[i + 1])
+  # as long as we treat indices cyclically.
   return(x[Index3D(i + 1)] * y[Index3D(i + 2)] - x[Index3D(i + 2)] * y[Index3D(i + 1)])
 }
 
@@ -608,8 +618,8 @@ rot3D <- function(X, Y) {
   eje <- matrix(nrow = 1, ncol = 3, 0)
   tita <- 0
 
-  f = nrow(X)  #cantidad de landmarks
-  c = ncol(X)  # dim del espacio
+  f = nrow(X)  # number of landmarks
+  c = ncol(X)  # dimensions
 
   R <- matrix(nrow = c, ncol = c, 0)
 
@@ -628,7 +638,7 @@ rot3D <- function(X, Y) {
       E[i, , j] <- valEje
       valAng <- angurot(R)
       Teta[j, i] <- valAng
-      Teta[i, j] <- -(valAng) #optimizado
+      Teta[i, j] <- -(valAng) #optimized
     }
   }
 

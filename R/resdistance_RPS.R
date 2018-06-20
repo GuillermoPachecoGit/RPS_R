@@ -3,11 +3,11 @@
 #'
 #' @param X The input set of nx3 matrices (objects)
 #'
-#' @return This function computes the a resistant distance between each pair of matrices from the input set
+#' @return This function computes the sum of non-squared euclidean distances across landmarks for each pair of matrices from the input set
 #'
 #' @author Guillermo A. Pacheco, Viviana Ferraggine, Sebastian Torcida
 #' @export
-distanciaR <- function(X) {
+resdistance_RPS <- function(X) {
     numEjemplares <- ncol(X[1, , ])
     nLandmark <- nrow(X[, , 1])
 

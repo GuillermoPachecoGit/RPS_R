@@ -1,16 +1,17 @@
-#'  Given a nxn distance matrix D(not necessarily Euclidean) and a initial set X0 (nxk matrix)
-#'  of n seeds in k dim, the function finds a set of n points in k dimensions X (kxn matrix) by least squares such
-#'  that Euclidean distance nxn matrix Dk among these new points X is as close as to D.
+#'  Given a n x n distance matrix D (not necessarily Euclidean) and a initial
+#'  set X0 of n seeds in k dim (that is, an initial n x k matrix), this function finds
+#'  a set of n points in k dimensions X (a final n x k matrix) through a least-squares
+#'  criterion such that the n x n matrix Dk of euclidean distances among these new points X
+#'  is as close as possible to D.
 #'
-#' @param D distance matrix nxn.
-#' @param k dimention of output.
+#' @param D distance matrix n x n to be approximated
+#' @param k dimension of output results
 #'
-#' @return X  the function finds a set of n points in k dimensions X (kxn matrix) by least squares such that
-#'  Euclidean distance nxn matrix Dk among these new points X is as close as to D.
+#' @return X  A set of n points in k dimensions
 #'
-#' @author Guillermo Andres Pacheco, Viviana Elizabeth Ferraggine, Sebastian Torcida
+#' @author Guillermo Pacheco, Viviana Ferraggine, Sebastian Torcida
 #' @export
-univMDSeucl <- function(D, k) {
+eucunivMDS_RPS <- function(D, k) {
     iteraciones <- 10
     tol <- 1e-09
     nl <- nrow(D)
