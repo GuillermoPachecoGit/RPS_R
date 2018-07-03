@@ -13,9 +13,11 @@
 #' @param ctr Centering options: "gmedian" (the spatial or gemetric median, default choice), "median" (the componentwise median), "mean" (the average)
 #' @param legend.loc The location of the legend for the plot.result function
 #'
-#' @return
+#' @usage
+#' matchingsymm_RPS(A,ctr="gmedian",legend.loc="topleft")
 #'
 #' @author Federico Lotto, Sebastian Torcida
+#'
 #' @export
 matchingsymm_RPS<-function(A,ctr="gmedian",legend.loc="topleft"){
 

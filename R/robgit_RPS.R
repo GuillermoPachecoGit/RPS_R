@@ -1,4 +1,4 @@
-#' Resistant Procrustes Superposition Package in R (RPS_R):
+#' Resistant Procrustes Superposition Package in R (RPS):
 #' a novel package for landmark-based resistant shape analysis
 #'
 #' Description
@@ -20,7 +20,7 @@
 #' Hence, this R-package specifically implements an a set of descriptive tools
 #' following Torcida et. al (2014*)
 #' to perform a resistant shape analysis of 2D and 3D configurations of landmarks.
-#' The RPS_R package includes:
+#' The RPS package includes:
 #'  *a generalized resistant Procrustes superposition (robgitRPS.R)
 #'  *a resistant distance to quantify the resulting shape differences (distanciaR.R), and
 #'  *a resistant Multidimensional Scaling to produce an ordination (univMDSrobust.R)
@@ -40,6 +40,16 @@
 #'
 #'
 #' @author Guillermo Pacheco, Viviana Ferraggine, Sebastian Torcida
+#'
+#' @examples
+#'
+#' source = array(matrix(nrow = 8,ncol = 3),c(8,3,3),dimnames = NULL)
+#' source[,,1] <- matrix(c(3,0,0,3,0,1,3,1,1,3,1,0,0,0,0,0,0,1,0,1,1,0,1,0),nrow = 8,ncol = 3,byrow = TRUE)
+#' source[,,2] <- matrix(c(3, 0 ,0,3, 0, 0.5,3, 1 ,0.75,3 ,1 ,0,0 ,0 ,0,0, 0 ,1,0, 1, 1,0, 1, 0.25),nrow = 8,ncol = 3,byrow = TRUE)
+#' source[,,3] <- matrix(c(5, 2 ,1,3, 0, 1.5,3.4, 1 ,1.75,3 ,1 ,0,0 ,0 ,0,0, 2 ,1,0, 3, 1,0, 1, 0.75),nrow = 8,ncol = 3,byrow = TRUE)
+#' result <- RPS::robgit_RPS(source, consenso = FALSE)
+#' result
+#'
 #' @export
 robgit_RPS <- function(X, consenso = FALSE) {
 
@@ -81,7 +91,7 @@ robgit_RPS <- function(X, consenso = FALSE) {
     for (i in 1:f) {
       res[i, k] <- norm(t(as.matrix(Y[i, ])) - t(as.matrix(X[i, , k])), "F")
     }
-    resme[1, k] <- median(res[, k])
+    #resme[1, k] <- median(res[, k])
     resme[1, k] <- sum(res[, k])
   }
 
@@ -93,7 +103,7 @@ robgit_RPS <- function(X, consenso = FALSE) {
   conteomed <- matrix(nrow = 1, ncol = r, 0)
 
   # median landmark residual between consecutive (resistant) consensus is the chosen stopping criterion
-  while ((z <= iterTotal) & (medland(Y - W, 1) > tol)) {
+  while ((z <= iterTotal) & (abs(residual - residualant) > tol)) {
     for (k in 1:r) {
       Aux[, , k] <- scaleSpecimen(Aux[, , k], Y)
       list_out <- rotation(Aux[, , k], H[, , k], Y)
@@ -125,12 +135,16 @@ robgit_RPS <- function(X, consenso = FALSE) {
       for (i in 1:f) {
         res[i, k] <- norm(t(as.matrix(Y[i, ])) - t(as.matrix(X[i, , k])), "F")
       }
-      resme[1, k] <- median(res[, k])
+      #resme[1, k] <- median(res[, k])
+      resme[1, k] <- sum(res[, k])
     }
 
     W <- Y
     Y <- spatialmed_config(X)  # consensus: the spatial median configuration
+    residualant <- residual
+    residual <- sum(resme)
     z <- (z + 1)
+
   }
 
   if (adjustament == TRUE) {
@@ -240,7 +254,7 @@ ejerot <- function(R) {
   if (count < 9) {
 
     H <- R - diag(3)
-    V <- Null(t(H) %*% H)
+    V <- MASS::Null(t(H) %*% H)
   } else {
     V <- matrix(nrow = 1, ncol = 3, 0)
     V[1, 3] <- 1
@@ -374,7 +388,7 @@ matrizrot3D <- function(e, a) {
 
   Bloque[3, 3] <- 1  # the eigenvalue corresponding to the rotation axis
   Bloque[1:2, 1:2] = matrizrot(a)  # the 2D rotation of angle 'a' in the plane orthogonal to axis 'e'
-  V = Null(t(e))
+  V = MASS::Null(t(e))
   AF[3, ] <- e  # the axis is placed on the 3rd row
   AF[1:2, ] <- t(V)  #
 

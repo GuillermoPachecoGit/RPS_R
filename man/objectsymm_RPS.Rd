@@ -12,8 +12,7 @@ then left paired landmarks and finally right paired landmarks
 Configurations are ordered in this way: L side Object 1 and R side Object 1,
 L side Object 2 and R side Object 2, etc}
 \usage{
-objectsymm_RPS(A, ctr = "gmedian", prs.file, proj.met = "msum",
-  legend.loc = "topleft")
+objectsymm_RPS(A,ctr="gmedian",prs.file,proj.met="msum",legend.loc="topleft")
 }
 \arguments{
 \item{A}{Input data: an array or matrix of size n (landmarks) x 2 (in 2D) x k (objects)}
@@ -27,7 +26,7 @@ objectsymm_RPS(A, ctr = "gmedian", prs.file, proj.met = "msum",
 \item{legend.loc}{The location of the legend for the plot.result function}
 }
 \value{
-
+w
 }
 \description{
 Description

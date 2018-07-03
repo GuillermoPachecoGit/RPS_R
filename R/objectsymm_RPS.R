@@ -17,9 +17,12 @@
 #' @param proj.met The choice to compute the saggital axis: sum or median of projections
 #' @param legend.loc The location of the legend for the plot.result function
 #'
-#' @return
+#' @return w
 #'
 #' @author Federico Lotto, Sebastian Torcida
+#'
+#' @usage
+#'  objectsymm_RPS(A,ctr="gmedian",prs.file,proj.met="msum",legend.loc="topleft")
 #' @export
 #'
 objectsymm_RPS<-function(A,ctr="gmedian",prs.file,proj.met="msum",legend.loc="topleft"){
