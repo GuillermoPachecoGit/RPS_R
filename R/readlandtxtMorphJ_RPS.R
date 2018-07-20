@@ -10,15 +10,11 @@
 #' @export
 readlandtxtMorphJ_RPS <- function(path, dim) {
     result <- read.table(path)  #get data from the file into an array
-
     s <- nrow(result)  #number of objects
     p <- ncol(result[1, ]) - 1
     p <- p/dim
-
     M <- array(matrix(nrow = p, ncol = dim, 0), c(p, dim, s), c(2, 1, 3))  #output structure
-
     names <- list()
-
     for (i in 1:s) {
         line <- result[i, ]
         name <- as.character(line[[1]])  #gets the names
@@ -35,11 +31,7 @@ readlandtxtMorphJ_RPS <- function(path, dim) {
                 coord = (coord + 1)
             }
         }
-
-
         M[, , i] <- m_specimen
     }
-
-
     return(list(M, names))
 }

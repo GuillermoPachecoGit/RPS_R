@@ -1,8 +1,3 @@
-#un archivo (por defecto llamado "pairs.txt") que es una lista de los pares de landmarks
-#referencias: "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center"
-
-#' Description
-#'-----------
 #' This function obtains the individual resistant-symmetric shape for 2D
 #' object-symmetry data. The input is an array A of size
 #' n (landmarks) x p (dimensions) x k (objects)
@@ -23,6 +18,12 @@
 #'
 #' @usage
 #'  objectsymm_RPS(A,ctr="gmedian",prs.file,proj.met="msum",legend.loc="topleft")
+#'
+#'@importFrom "graphics"  "legend"  "plot" "points" "text"
+#'@importFrom "stats" "median" "runif"
+#'@importFrom "utils" "capture.output" "combn" "head" "read.table"
+#'@importFrom "Gmedian" "Weiszfeld"
+#'
 #' @export
 #'
 objectsymm_RPS<-function(A,ctr="gmedian",prs.file,proj.met="msum",legend.loc="topleft"){

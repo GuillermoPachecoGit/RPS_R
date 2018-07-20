@@ -2,9 +2,7 @@
 % Please edit documentation in R/matchingsymm_RPS.R
 \name{matchingsymm_RPS}
 \alias{matchingsymm_RPS}
-\title{Description
------------
-This function obtains the individual resistant-symmetric shape for 2D
+\title{This function obtains the individual resistant-symmetric shape for 2D
 matching-symmetry data. The input is an array A of size
 n (landmarks) x p (dimensions) x 2k (objects: the left-right sides for each)
 Configurations are ordered in this way: left side Object 1, right side Object 1,
@@ -13,15 +11,13 @@ left side Object 2, right side Object 2, etc}
 matchingsymm_RPS(A,ctr="gmedian",legend.loc="topleft")
 }
 \arguments{
-\item{A}{Input data: an array of size n (landmarks) x 2 (in 2D) x 2k (left/right sides for k configurations)}
+\item{A}{an array of size n (landmarks) x 2 (in 2D) x 2k (left/right sides for k configurations)}
 
 \item{ctr}{Centering options: "gmedian" (the spatial or gemetric median, default choice), "median" (the componentwise median), "mean" (the average)}
 
 \item{legend.loc}{The location of the legend for the plot.result function}
 }
 \description{
-Description
------------
 This function obtains the individual resistant-symmetric shape for 2D
 matching-symmetry data. The input is an array A of size
 n (landmarks) x p (dimensions) x 2k (objects: the left-right sides for each)

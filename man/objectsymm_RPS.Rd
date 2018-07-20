@@ -2,9 +2,7 @@
 % Please edit documentation in R/objectsymm_RPS.R
 \name{objectsymm_RPS}
 \alias{objectsymm_RPS}
-\title{Description
------------
-This function obtains the individual resistant-symmetric shape for 2D
+\title{This function obtains the individual resistant-symmetric shape for 2D
 object-symmetry data. The input is an array A of size
 n (landmarks) x p (dimensions) x k (objects)
 Landmarks must be in this order: saggital (or unpaired) landmarks first,
@@ -29,8 +27,6 @@ objectsymm_RPS(A,ctr="gmedian",prs.file,proj.met="msum",legend.loc="topleft")
 w
 }
 \description{
-Description
------------
 This function obtains the individual resistant-symmetric shape for 2D
 object-symmetry data. The input is an array A of size
 n (landmarks) x p (dimensions) x k (objects)

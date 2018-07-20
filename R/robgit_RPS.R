@@ -1,39 +1,35 @@
 #' Resistant Procrustes Superposition Package in R (RPS):
 #' a novel package for landmark-based resistant shape analysis
 #'
-#' Description
-#' -----------
-#' Geometric morphometrics uses landmarks coordinates to
-#' extract shape information, and shape differences between objects or individuals
-#' are analyzed by performing a Procrustes superposition of the corresponding
-#' configurations of landmarks.
-#' Which superposition criterion should be used is always a central issue;
-#' typically, the least squares (LS) Procrustes superposition is chosen. This method
-#' minimizes the sum of squared distances across landmarks, but it is widely accepted
-#' that the result can be misleading whenever shape differences are located in less
-#' than 50% of thelandmarks.
-#' A resistant Procrustes superposition is probably the most
-#' elegant and efficient alternative. It perfectly superimposes those landmarks
-#' exhibiting no variation in case they are more than 50%. Despite this appealing
-#' and rather intuitive feature, the resistant approach is seldom used probably due
-#' to the lack of a free & friendly software implementation.
-#' Hence, this R-package specifically implements an a set of descriptive tools
-#' following Torcida et. al (2014*)
-#' to perform a resistant shape analysis of 2D and 3D configurations of landmarks.
-#' The RPS package includes:
-#'  *a generalized resistant Procrustes superposition (robgitRPS.R)
-#'  *a resistant distance to quantify the resulting shape differences (distanciaR.R), and
-#'  *a resistant Multidimensional Scaling to produce an ordination (univMDSrobust.R)
-#' The corresponding LS counterparts of the previous functions have also been
-#' implemented (procrustesCM.R, distanciaCM.R and univMDSeucl.R, respectively), to
-#' offer a rather complete set of descriptive tools and to enable the comparison
-#' of LS and resistant approaches if applied to the same dataset.
+#' RPS provides a set of tools to perform a rather complete descriptive
+#' landmark-based resistant shape analysis 3D and 2D, following Torcida
+#' et al. 2014 ("An integrated approach for landmark-based resistant shape analysis
+#'    in 3D", Evol. Biol. 41(2):351_366). More specifically, these tools enable to
+#' obtain: i) a generalized resistant Procrustes superposition (robgit_RPS.R) for
+#' a set of configurations of landmarks either in 3D and 2D; ii) a resistant
+#' distance (resdistance_RPS.R) to quantify shape differences obtained following
+#' the resistant Procrustes superimposition, and iii) a resistant ordination
+#' (resunivMDS_RPS.R) of the superimposed configurations based on the universal
+#' Multidimensional Scaling from (Agarwal et al. 2010). The corresponding least
+#' squares (LS) counterparts of all these tools (procrustesCM_RPS.R,
+#' cmdistance_RPS.R and eucunivMDS_RPS.R, respectively) have also been implemented
+#' in RPS_R to offer a more complete set of shape analysis descriptive tools. This
+#' enables the comparison of the LS and resistant superimposition results when
+#' applied to the same dataset. Also included is a rather new method for a
+#' resistant analysis of individual shape asymmetry for configurations of
+#' landmarks in 2D with bilateral symmetry (matching or object symmetry), following
+#' Torcida et al. 2016 ("A resistant method for landmark-based analysis of
+#' individual asymmetry in two dimensions",Quant. Biol. 4(4):270_282). The main
+#' tools enable to estimate the resistant symmetric shape under matching symmetry
+#' (matchingsymm_RPS.R) adn the resistant symmetric shape estimation under object
+#' symmetry (objectsymm_RPS.R). In both cases, a plot of the results and the table
+#' sof landmarks contributions to asymmetry are also offered.
 #'
 #' @section Functions:
 #' eucunivMDS_RPS, resunivMDS_RPS, cmdistance_RPS, resdistance_RPS, readlandtxtMorphJ_RPS, robgit_RPS,matchingsymm_RPS,objectsymm_RPS, procrustesCM_RPS
 #'
 #' @docType package
-#' @name 'RPS_R'
+#' @name 'RPS'
 #' @param X A s-dimensional array of n x k matrices (k configurations of n landmarks), each representing the shape of an object
 #' @param consenso A logical value that determines if the consensus configuration is returned.
 #' @return s-dimensional array of n x k matrices, representing the (resistant) superimposed objects
@@ -41,12 +37,17 @@
 #'
 #' @author Guillermo Pacheco, Viviana Ferraggine, Sebastian Torcida
 #'
-#' @examples
+#' @usage
+#' robgit_RPS(X, consenso = FALSE)
 #'
+#' @examples
 #' source = array(matrix(nrow = 8,ncol = 3),c(8,3,3),dimnames = NULL)
-#' source[,,1] <- matrix(c(3,0,0,3,0,1,3,1,1,3,1,0,0,0,0,0,0,1,0,1,1,0,1,0),nrow = 8,ncol = 3,byrow = TRUE)
-#' source[,,2] <- matrix(c(3, 0 ,0,3, 0, 0.5,3, 1 ,0.75,3 ,1 ,0,0 ,0 ,0,0, 0 ,1,0, 1, 1,0, 1, 0.25),nrow = 8,ncol = 3,byrow = TRUE)
-#' source[,,3] <- matrix(c(5, 2 ,1,3, 0, 1.5,3.4, 1 ,1.75,3 ,1 ,0,0 ,0 ,0,0, 2 ,1,0, 3, 1,0, 1, 0.75),nrow = 8,ncol = 3,byrow = TRUE)
+#' source[,,1] <- matrix(c(3,0,0,3,0,1,3,1,1,3,1,0,0,0,0,0,0,1,0,1,1,0,1,0)
+#'                    ,nrow = 8,ncol = 3,byrow = TRUE)
+#' source[,,2] <- matrix(c(3, 0 ,0,3, 0, 0.5,3, 1 ,0.75,3 ,1 ,0,0 ,0 ,0,0, 0 ,1,0, 1, 1,0, 1, 0.25)
+#'                      ,nrow = 8,ncol = 3,byrow = TRUE)
+#' source[,,3] <- matrix(c(5, 2 ,1,3, 0, 1.5,3.4, 1 ,1.75,3 ,1 ,0,0 ,0 ,0,0, 2 ,1,0, 3, 1,0, 1, 0.75)
+#'                      ,nrow = 8,ncol = 3,byrow = TRUE)
 #' result <- RPS::robgit_RPS(source, consenso = FALSE)
 #' result
 #'

@@ -1,15 +1,10 @@
-
-#Lee del dir de trabajo un archivo (por defecto llamado "side.txt") que es una lista del lado de cada config de A (DEBE usar L y R para izquierda y derecha)
-
-#' Description
-#' -----------
 #' This function obtains the individual resistant-symmetric shape for 2D
 #' matching-symmetry data. The input is an array A of size
 #' n (landmarks) x p (dimensions) x 2k (objects: the left-right sides for each)
 #' Configurations are ordered in this way: left side Object 1, right side Object 1,
 #' left side Object 2, right side Object 2, etc
 #'
-#' @param A Input data: an array of size n (landmarks) x 2 (in 2D) x 2k (left/right sides for k configurations)
+#' @param A  an array of size n (landmarks) x 2 (in 2D) x 2k (left/right sides for k configurations)
 #' @param ctr Centering options: "gmedian" (the spatial or gemetric median, default choice), "median" (the componentwise median), "mean" (the average)
 #' @param legend.loc The location of the legend for the plot.result function
 #'
@@ -21,15 +16,18 @@
 #' @export
 matchingsymm_RPS<-function(A,ctr="gmedian",legend.loc="topleft"){
 
+  nl<-length(A[,1,1])#numero de landmarks
   n<-length(A[,1,1]) # The number of landmarks
   k<-dim(A)[3]/2     # The number of configurations (objects)
 
   # Initial centering----------------
   Mc<-center(A,cent=ctr)
 
-  #Side arrays are created----------
-  Mcl<-Mc[,,side==1,drop=FALSE]
-  Mcr<-Mc[,,side==2,drop=FALSE]
+  for(i in 1:k){
+    #Side arrays are created----------
+    Mcl<-Mc[,,(2*i-1),drop=FALSE]
+    Mcr<-Mc[,,(2*i),drop=FALSE]
+  }
 
   dv<-Mcl-Mcr  # Difference vectors between corresponding left-right sided lanmarks
 
@@ -52,7 +50,7 @@ matchingsymm_RPS<-function(A,ctr="gmedian",legend.loc="topleft"){
 
   S<-array(t(c(Mcr,Ur)),c(nl,2,(n*2)))
   print("please wait...",quote = F)
-  capture.output(U<-robgit(S))
+  capture.output(U<- RPS::robgit_RPS(S))
   #A resistant Procrustes superposition to filter out remaining differences
   #in size and/or orientation between sides
   Ud<-U[,,1:n,drop=FALSE]

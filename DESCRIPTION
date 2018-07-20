@@ -1,6 +1,6 @@
 Package: RPS
 Type: Package
-Title: Resistant Procrustes Superimposition R-Package (RPS)
+Title: Resistant Procrustes Superimposition
 Version: 1.0.0
 Authors@R: c(person("Guillermo Andres", "Pacheco", email = "guillermopacheco.exa@gmail.com",
                   role = c("aut", "cre")),
@@ -8,31 +8,10 @@ Authors@R: c(person("Guillermo Andres", "Pacheco", email = "guillermopacheco.exa
                   person("Viviana", "Ferragine", email = "viviana.ferraggine@gmail.com", role = "aut"),
                   person("Federico", "Lotto", email = "federicolotto@gmail.com@gmail.com", role = "aut"))
 Maintainer: Guillermo Andres Pacheco <guillermopacheco.exa@gmail.com>
-Description: This package offers a set of tools to perform a rather complete descriptive
-             landmark-based resistant shape analysis 3D and 2D, following
-             Torcida et al. 2014 ("An integrated approach for landmark-based resistant
-             shape analysis in 3D", Evol. Biol. 41(2):351-366). 
-             More specifically, these tools enable to obtain:
-              *a generalized resistant Procrustes superposition (robgit_RPS.R) 
-              for a set of configurations of landmarks either in 3D and 2D
-              *a resistant distance (resdistance_RPS.R) to quantify shape differences
-              obtained following the resistant Procrustes superimposition, and
-              *a resistant ordination (resunivMDS_RPS.R) of the superimposed configurations
-              based on the universal Multidimensional Scaling from (Agarwal et al. 2010)   
-             The corresponding Least-squares counterparts of all these tools (procrustesCM_RPS.R,
-             cmdistance_RPS.R and eucunivMDS_RPS.R, respectively) have also been implemented
-             in RPS_R to offer a more complete set of shape analysis descriptive
-             tools. This enables the comparison of the LS and resistant superimposition
-             results when applied to the same dataset.
-             The RPS_R package also includes a rather new method for a resistant analysis
-             of individual shape asymmetry for configurations of landmarks in 2D with bilateral
-             symmetry (matching or object symmetry), following Torcida et al. 2016 ("A resistant
-             method for landmark-based analysis of individual asymmetry in two dimensions",
-             Quant. Biol. 4(4):270-282). The main tools enable to estimate:
-             *the resistant symmetric shape under matching symmetry (matchingsymm_RPS.R),
-             including a plot of the results and the table of landmarks' contributions to asymmetry
-             *a resistant symmetric shape estimation under object symmetry (objectsymm_RPS.R),
-             including a plot of the results and the table of landmarks' contributions to asymmetryobject_symm.R functions that follow (Torcida et al. 2016).
+Description: Based on RPS tools, a rather complete resistant shape
+    analysis of 2D and 3D datasets based on landmarks can be performed. In addition, 
+    landmark-based resistant shape analysis of individual asymmetry in 2D for
+    matching or object symmetric structures is also possible.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -43,5 +22,4 @@ Imports:
     igraph,
     ape,
     matlab,
-    Robgit,
     Gmedian
